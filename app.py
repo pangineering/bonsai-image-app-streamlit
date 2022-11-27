@@ -50,14 +50,25 @@ if task == 'image classification':
         "image classification",
         ('binary', 'multi'))
 
+    data = st.radio(
+        "image data",
+        ('dogsvscats', 'bonsai','cifar10','cifar100'))
+
 # if genre == 'Comedy':
 #     st.write('You selected comedy.')
 # else:
 #     st.write("You didn't select comedy.")
-
+if task == 'image classification':
+    models = ('Model1', 'Model2', 'Model3')
+elif task == 'object recognition':
+    models = ('Model4', 'Model5', 'Model6')
+else:
+    models = ('Model7', 'Model8', 'Model9')
+    
+        
 st.subheader("Models")
 option = st.selectbox(
     'Select a model',
-    ('Model1', 'Model2', 'Model3'))
+    models)
 
 st.write('You selected:', option)
