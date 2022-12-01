@@ -12,16 +12,54 @@ from PIL import Image
 
 import torch
 
+from torchvision import transforms
+
+
+
 st.title('Image App')
 
+#######
+def loadModel(m):
+    model = torch.load(m)
+    model.eval()
+    return model
+
+def predict(model,image):
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    img = Image.open(image)
+    convert_tensor = transforms.ToTensor()
+    inputs = convert_tensor(img)
+    inputs = inputs.to(device)
+    inputs = inputs.unsqueeze(0)
+    outputs = model(inputs)
+    
+    _, preds = torch.max(outputs, 1)
+
+    return preds
+
+bonsai_list = ['Bunjinji',
+ 'Chokkan',
+ 'Fukinagashi',
+ 'Han Kengai',
+ 'Hokidachi',
+ 'Moyogi',
+ 'Seki-joju',
+ 'Sokan',
+ 'Yose-ue']
+
+ 
+def getClass(preds,class_list):
+    return class_list[preds[0]]
 
 
+
+#######
 
 st.header('Image Form')
 
 def load_image(image_file):
 	img = Image.open(image_file)
-	return img
+	return img  
 
 
 
@@ -38,6 +76,8 @@ if image_file is not None:
 		
 		st.image(img,width=200)
 
+
+
 st.subheader("Task")
 task = st.selectbox(
     'Select a task',
@@ -46,18 +86,11 @@ task = st.selectbox(
 st.write('You selected:', task)
 
 if task == 'image classification':
-    classification = st.radio(
-        "image classification",
-        ('binary', 'multi'))
 
     data = st.radio(
         "image data",
         ('dogsvscats', 'bonsai','cifar10','cifar100'))
 
-# if genre == 'Comedy':
-#     st.write('You selected comedy.')
-# else:
-#     st.write("You didn't select comedy.")
 if task == 'image classification':
     models = ('Model1', 'Model2', 'Model3')
 elif task == 'object recognition':
@@ -72,3 +105,20 @@ option = st.selectbox(
     models)
 
 st.write('You selected:', option)
+
+st.write('Selection summary')
+
+params = {
+    'img': image_file,
+    'task': task,
+    'data': data,
+    'model': option
+}
+
+st.write(params)
+
+if st.button('Predict'):
+    model = loadModel('./models/bonsai/model_ss.pt')
+    result = predict(model,image_file[0])
+    class1 = getClass(result,bonsai_list)
+    st.write(class1)
