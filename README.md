@@ -33,7 +33,7 @@
 
 [![Product Name Screen Shot][product-screenshot]](https://example.com)
 
-Here's a blank template to get started: To avoid retyping too much info. Do a search and replace with your text editor for the following: `github_username`, `repo_name`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`
+The Bonsai Image app with Streamlit is an AI-powered project that uses deep learning to predict the type of bonsai tree in an image. Developed using PyTorch and Streamlit, the project provides a user-friendly interface for users to upload an image of a bonsai tree and get the output as text, indicating the type of bonsai tree in the image. The project is highly accurate and can be applied to other industries that require object identification from images.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
